@@ -6,7 +6,7 @@ Galil::Galil() {
 }												
 Galil::Galil(EmbeddedFunctions * Funcs, GCStringIn address) {
 	// Constructor with EmbeddedFunciton initialization
-	Functions->GOpen("192.168.0.120 -d", &g);
+	
 }
 
 void Galil::DigitalOutput(uint16_t value) {
@@ -43,6 +43,7 @@ float Galil::AnalogInput(uint8_t channel) {						// Read Analog channel and retu
 	return 10;
 }
 void Galil::AnalogOutput(uint8_t channel, double voltage) {		// Write to any channel of the Galil, send voltages as
+	Functions->GOpen("192.168.0.120 -d", &g);
 	std::string inputStr = "";									// 2 decimal place in the command string
 	char buf[1024];
 	char Command[128] = "";
