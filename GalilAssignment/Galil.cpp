@@ -19,8 +19,8 @@ Galil::Galil(EmbeddedFunctions * Funcs, GCStringIn address) {
 }
 
 void Galil::DigitalOutput(uint16_t value) {
-
-}// Write to all 16 bits of digital output, 1 command to the Galil
+	// Write to all 16 bits of digital output, 1 command to the Galil
+}
 void Galil::DigitalByteOutput(bool bank, uint8_t value) {
 	// Write to one byte, either high or low byte, as specified by user in 'bank'
 }													// 0 = low, 1 = high
@@ -69,6 +69,9 @@ void Galil::AnalogInputRange(uint8_t channel, uint8_t range) {	// Configure the 
 
 // ENCODER / CONTROL FUNCTIONS
 void Galil::WriteEncoder() {								// Manually Set the encoder value to zero
+	//NOT COMPLETE
+	std::string CommandStr = "WE,0,0";
+	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
 }
 int Galil::ReadEncoder() {									// Read from Encoder
 	return 0;
