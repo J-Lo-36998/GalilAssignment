@@ -4,6 +4,7 @@
 #include <sstream>
 #include <string>
 #include <stdio.h>
+#include <ctype.h>
 //Constructors
 Galil::Galil() {
 	// Default constructor. Initialize variables, open Galil connection and allocate memory. NOT AUTOMARKED
@@ -13,6 +14,7 @@ Galil::Galil(EmbeddedFunctions * Funcs, GCStringIn address) {
 	g = GCon{ 0 };
 	Funcs->GOpen(address, &g);
 	Functions = Funcs;
+	std::cout << ReadBuffer;
 	std::cout << "Connected" << std::endl;
 }
 
@@ -47,17 +49,23 @@ bool Galil::CheckSuccessfulWrite() {	// Check the string response from the Galil
 
 // ANALOG FUNCITONS
 float Galil::AnalogInput(uint8_t channel) {						// Read Analog channel and return voltage	
-	return 10;
+	std::string CommandStr = "MG@AN[" + std::to_string(channel) + "]";
+	float voltage = 0;
+	char voltageData[] = "";
+	Functions-> GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
+	voltage = atof(ReadBuffer);
+	return voltage;
 }
 void Galil::AnalogOutput(uint8_t channel, double voltage) {		// Write to any channel of the Galil, send voltages as
 	//char command[128] = "";
 	//sprintf_s(command, "AO%d,%lf", channel, voltage);
-	std::string in = "AO" + std::to_string(channel) + "," + std::to_string(voltage);
-	std::cout << in << std::endl;
-	Functions->GCommand(g, in.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
+	std::string CommandStr = "AO" + std::to_string(channel) + "," + std::to_string(voltage);
+	std::cout << CommandStr << std::endl;
+	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
 }
 void Galil::AnalogInputRange(uint8_t channel, uint8_t range) {	// Configure the range of the input channel with
 													// the desired range code
+
 }
 
 // ENCODER / CONTROL FUNCTIONS

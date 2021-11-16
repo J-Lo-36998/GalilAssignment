@@ -20,9 +20,18 @@ int main() {
 	EmbeddedFunctions Funcs;
 	Galil galil (&Funcs, "192.168.0.120 -d");
 	
-	galil.AnalogOutput(0, 1);
+	//galil.AnalogOutput(0, 0);
+	
+	std::cout << galil.AnalogInput(0) << std::endl;
+	std::cout << galil.AnalogInput(1) << std::endl;
+	std::cout << galil.AnalogInput(2) << std::endl;
+	std::cout << galil.AnalogInput(3) << std::endl;
+	std::cout << galil.AnalogInput(4) << std::endl;
+	std::cout << galil.AnalogInput(5) << std::endl;
+	std::cout << galil.AnalogInput(6) << std::endl;
+	std::cout << galil.AnalogInput(7) << std::endl;
 
-	Console::WriteLine("Termindating!");
+	Console::WriteLine("Terminating!");
 	Console::ReadKey();
 	
 	return G_NO_ERROR;
