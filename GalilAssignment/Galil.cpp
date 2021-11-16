@@ -60,12 +60,11 @@ void Galil::AnalogOutput(uint8_t channel, double voltage) {		// Write to any cha
 	//char command[128] = "";
 	//sprintf_s(command, "AO%d,%lf", channel, voltage);
 	std::string CommandStr = "AO" + std::to_string(channel) + "," + std::to_string(voltage);
-	std::cout << CommandStr << std::endl;
 	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
 }
-void Galil::AnalogInputRange(uint8_t channel, uint8_t range) {	// Configure the range of the input channel with
-													// the desired range code
-
+void Galil::AnalogInputRange(uint8_t channel, uint8_t range) {	// Configure the range of the input channel with												// the desired range code
+	std::string CommandStr = "AQ" + std::to_string(channel) + "," + std::to_string(range);
+	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
 }
 
 // ENCODER / CONTROL FUNCTIONS
