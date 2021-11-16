@@ -7,7 +7,7 @@
 #include <fstream>
 #include <string>
 #include "Galil.h"
-
+#include <string>
 using namespace System;
 using namespace System::IO;
 using namespace System::Collections::Generic;
@@ -20,7 +20,14 @@ int main() {
 	char Command[128] = "";
 
 	GOpen("192.168.0.120 -d", &g);
-	const char array[] = { "AO0, 0" };
+	std::string in = "AO0, 1";
+	unsigned char channel = 0;
+	double voltage = 5.00;
+
+	char array[] = {""};
+	strncpy(array, in.c_str(), in.size());
+	std::cout << array;
+
 	sprintf_s(Command, array);
 
 	GCommand(g, Command, buf, sizeof(buf), 0);
