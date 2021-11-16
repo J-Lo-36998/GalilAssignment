@@ -1,5 +1,14 @@
 #include "Galil.h"
 
+//Constructors
+Galil::Galil() {
+	// Default constructor. Initialize variables, open Galil connection and allocate memory. NOT AUTOMARKED
+}												
+Galil::Galil(EmbeddedFunctions * Funcs, GCStringIn address) {
+	// Constructor with EmbeddedFunciton initialization
+	Functions->GOpen("192.168.0.120 -d", &g);
+}
+
 void Galil::DigitalOutput(uint16_t value) {
 
 }// Write to all 16 bits of digital output, 1 command to the Galil
@@ -34,7 +43,12 @@ float Galil::AnalogInput(uint8_t channel) {						// Read Analog channel and retu
 	return 10;
 }
 void Galil::AnalogOutput(uint8_t channel, double voltage) {		// Write to any channel of the Galil, send voltages as
-													// 2 decimal place in the command string
+	std::string inputStr = "";									// 2 decimal place in the command string
+	char buf[1024];
+	char Command[128] = "";
+	inputStr = std::to_string(channel) + ", " + std::to_string(voltage);
+	sprintf_s(Command, inputStr.c_str());
+	Functions->GCommand(g, Command, buf, sizeof(buf), 0);
 
 }
 void Galil::AnalogInputRange(uint8_t channel, uint8_t range) {	// Configure the range of the input channel with

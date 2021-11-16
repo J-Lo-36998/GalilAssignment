@@ -7,7 +7,7 @@
 #include <fstream>
 #include <string>
 #include "Galil.h"
-
+#include "EmbeddedFunctions.h"
 using namespace System;
 using namespace System::IO;
 using namespace System::Collections::Generic;
@@ -16,13 +16,12 @@ using namespace System::Threading::Tasks;
 GCon g = 0;
 
 int main() {
-	char buf[1024];
+	Galil Galil;
+	/*char buf[1024];
 	char Command[128] = "";
 
-	GOpen("192.168.0.120 -d", &g);
-	sprintf_s(Command, "AO0, 0");
-
-	GCommand(g, Command, buf, sizeof(buf), 0);
+	GOpen("192.168.0.120 -d", &g);*/
+	Galil.AnalogOutput('A0', 5.00);
 
 	if (g) {
 		GClose(g);
