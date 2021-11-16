@@ -15,6 +15,7 @@ Galil Library documentation.
 #include "gclibo.h"
 #include "gclib_errors.h"
 #include "gclib_record.h"
+#include <iostream>
 
 class EmbeddedFunctions {
 	public:

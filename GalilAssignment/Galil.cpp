@@ -1,12 +1,19 @@
 #include "Galil.h"
-
+#include <iostream>
+#include <conio.h>
+#include <sstream>
+#include <string>
+#include <stdio.h>
 //Constructors
 Galil::Galil() {
 	// Default constructor. Initialize variables, open Galil connection and allocate memory. NOT AUTOMARKED
 }												
 Galil::Galil(EmbeddedFunctions * Funcs, GCStringIn address) {
 	// Constructor with EmbeddedFunciton initialization
-	
+	g = GCon{ 0 };
+	Funcs->GOpen(address, &g);
+	Functions = Funcs;
+	std::cout << "Connected" << std::endl;
 }
 
 void Galil::DigitalOutput(uint16_t value) {
@@ -43,14 +50,11 @@ float Galil::AnalogInput(uint8_t channel) {						// Read Analog channel and retu
 	return 10;
 }
 void Galil::AnalogOutput(uint8_t channel, double voltage) {		// Write to any channel of the Galil, send voltages as
-	Functions->GOpen("192.168.0.120 -d", &g);
-	std::string inputStr = "";									// 2 decimal place in the command string
-	char buf[1024];
-	char Command[128] = "";
-	inputStr = std::to_string(channel) + ", " + std::to_string(voltage);
-	sprintf_s(Command, inputStr.c_str());
-	Functions->GCommand(g, Command, buf, sizeof(buf), 0);
-
+	//char command[128] = "";
+	//sprintf_s(command, "AO%d,%lf", channel, voltage);
+	std::string in = "AO" + std::to_string(channel) + "," + std::to_string(voltage);
+	std::cout << in << std::endl;
+	Functions->GCommand(g, in.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
 }
 void Galil::AnalogInputRange(uint8_t channel, uint8_t range) {	// Configure the range of the input channel with
 													// the desired range code
@@ -74,4 +78,8 @@ void Galil::setKi(double gain) {							// Set the integral gain of the controlle
 void Galil::setKd(double gain) {						// Set the derivative gain of the controller used in controlLoop()
 
 }
-Galil:: ~Galil() {}												// Default destructor. Deallocate memory and close Galil connection. NOT AUTOMARKED
+Galil:: ~Galil() {
+	if (g) {
+		Functions->GClose(g);
+	}
+}												// Default destructor. Deallocate memory and close Galil connection. NOT AUTOMARKED
