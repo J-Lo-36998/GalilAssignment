@@ -20,6 +20,8 @@ Galil::Galil(EmbeddedFunctions * Funcs, GCStringIn address) {
 
 void Galil::DigitalOutput(uint16_t value) {
 	// Write to all 16 bits of digital output, 1 command to the Galil
+	std::string CommandStr = "OP" + std::to_string(value) + "," + std::to_string(value);
+	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
 }
 void Galil::DigitalByteOutput(bool bank, uint8_t value) {
 	// Write to one byte, either high or low byte, as specified by user in 'bank'

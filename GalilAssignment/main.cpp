@@ -30,6 +30,7 @@ int main() {
 	std::cout << galil.AnalogInput(5) << std::endl;
 	std::cout << galil.AnalogInput(6) << std::endl;
 	std::cout << galil.AnalogInput(7) << std::endl;
+	galil.DigitalOutput(255);
 
 	Console::WriteLine("Terminating!");
 	Console::ReadKey();
