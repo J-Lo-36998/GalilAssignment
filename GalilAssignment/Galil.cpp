@@ -46,19 +46,14 @@ uint16_t Galil::DigitalInput() {
 	// Return the 16 bits of input data
 	// Query the digital inputs of the GALIL, See Galil command library @IN
 	uint16_t inputData = 0x0;
-	//int a[15] = { 0 };
-	/*for (int i = 16; i < 3; i++) {
-		std::string CommandStr = "MG@IN[" + std::to_string(i) + "]" ;
-		Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
-		inputData = atoi(ReadBuffer)| inputData  ;
-		inputData = inputData << 1;
-		std::bitset<16> x( inputData);
-		std::cout << atoi(ReadBuffer) << std::endl;
-		std::cout << x << std::endl;;
-	}*/
-	
-	//std::cout << inputData;
-	return 0;
+
+	for (int i = 15; i >= 0; i--) {
+		std::cout << i << std::endl;
+		inputData = inputData | DigitalBitInput(i)<<i;
+	}
+	/*std::bitset<16> x(inputData);
+	std::cout << x << std::endl;*/
+	return inputData;
 }
 uint8_t Galil::DigitalByteInput(bool bank) {	// Read either high or low byte, as specified by user in 'bank'
 										/// 0 = low, 1 = high
