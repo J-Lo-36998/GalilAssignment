@@ -36,7 +36,9 @@ void Galil::DigitalByteOutput(bool bank, uint8_t value) {
 	}
 }
 void Galil::DigitalBitOutput(bool val, uint8_t bit) {
-
+	// Write single bit to digital outputs. 'bit' specifies which bit
+	std::string CommandStr = "OB" + std::to_string(bit) + ","+std::to_string(val);
+	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
 }
 // DIGITAL INPUTS
 uint16_t Galil::DigitalInput() {

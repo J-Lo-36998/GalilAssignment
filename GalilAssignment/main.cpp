@@ -33,6 +33,7 @@ int main() {
 	galil.DigitalOutput(255);
 	galil.DigitalByteOutput(1, 0);
 	galil.DigitalByteOutput(0, 0);
+	galil.DigitalBitOutput(1, 8);
 
 	Console::WriteLine("Terminating!");
 	Console::ReadKey();
