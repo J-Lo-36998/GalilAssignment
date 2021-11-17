@@ -131,8 +131,8 @@ int main() {
 	Galil* galil = new Galil(&Funcs, addr);
 	//
 	///*
-	std::cout << galil->AnalogInput(0) << std::endl;
-	std::cout<<galil->CheckSuccessfulWrite();
+	//std::cout << galil->AnalogInput(0) << std::endl;
+	//galil->CheckSuccessfulWrite();
 	//std::cout << galil.AnalogInput(1) << std::endl;
 	//std::cout << galil.AnalogInput(2) << std::endl;
 	//std::cout << galil.AnalogInput(3) << std::endl;
@@ -141,7 +141,7 @@ int main() {
 	//std::cout << galil.AnalogInput(6) << std::endl;
 	//std::cout << galil.AnalogInput(7) << std::endl;*/
 	////galil.DigitalOutput(255);
-	////galil.DigitalByteOutput(1, 0);
+	std::cout <<unsigned int(galil->DigitalByteInput(0))<<std::endl;
 	//galil.DigitalOutput(0);
 
 	//for (uint8_t i = 0; i < 8; i++) {

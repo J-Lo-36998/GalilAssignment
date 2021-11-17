@@ -42,6 +42,7 @@ void Galil::DigitalByteOutput(bool bank, uint8_t value) {
 }
 void Galil::DigitalBitOutput(bool val, uint8_t bit) {
 	// Write single bit to digital outputs. 'bit' specifies which bit
+	
 	std::string CommandStr = "OB" + std::to_string(bit) + ","+std::to_string(val);
 	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
 }
@@ -63,11 +64,12 @@ uint8_t Galil::DigitalByteInput(bool bank) {
 	// Read either high or low byte, as specified by user in 'bank'
 	// 0 = low, 1 = high
 	uint16_t Data = 0x0;
-	uint16_t inputByte = 0x0;
-	
+	//uint16_t inputByte = 0x0;
 	Data = DigitalInput();
+	std::cout << Data << std::endl;
 	if (bank == TRUE) {//High Byte
-		uint8_t highByte = (Data >> 8)&0xff;
+		uint8_t highByte = (Data >> 8) & 0xFF;
+		std::cout << unsigned(highByte)<<std::endl;
 		return highByte;
 	}
 	else {//Low Byte
@@ -96,8 +98,15 @@ bool Galil::DigitalBitInput(uint8_t bit) {		// Read single bit from current digi
 
 bool Galil::CheckSuccessfulWrite() {	// Check the string response from the Galil to check that the last 
 								// command executed correctly. 1 = succesful. NOT AUTOMARKED
-	//Functions->GInfo(g, ReadBuffer, sizeof(ReadBuffer));
-	return Functions->GInfo(g, ReadBuffer, sizeof(ReadBuffer));
+	for (int i = 0; i < 1023; i++) {
+		if (ReadBuffer[i] == ':') {
+			return 1;
+		}
+		else if (ReadBuffer[i] == '?') {
+			return 0;
+		}
+	}
+	return 0;
 }
 
 // ANALOG FUNCITONS
@@ -136,26 +145,20 @@ int Galil::ReadEncoder() {									// Read from Encoder
 	return encoderVal;
 }
 void Galil::setSetPoint(int s) {							// Set the desired setpoint for control loops, counts or counts/sec
-	std::string CommandStr = "CL"+std::to_string(s);
-	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
+	setPoint = s;
 }
 void Galil::setKp(double gain) {							// Set the proportional gain of the controller used in controlLoop()
-	std::string CommandStr = "KP" + std::to_string(gain);
-	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
+	ControlParameters[0] = gain;
 }
 void Galil::setKi(double gain) {							// Set the integral gain of the controller used in controlLoop()
-	std::string CommandStr = "KI" + std::to_string(gain);
-	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
+	ControlParameters[1] = gain;
 }
 void Galil::setKd(double gain) {						// Set the derivative gain of the controller used in controlLoop()
-	std::string CommandStr = "KD" + std::to_string(gain);
-	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
+	ControlParameters[2] = gain;
 }
 //std::ostream& operator<<(std::ostream& output, Galil& galil) {
-//	Galil myGalil;
-//	EmbeddedFunctions* Functions;
-//
-//	Functions->GInfo(myGalil.g, );
+//	std::cout << "Hello World";
+//	return 0;
 //}
 Galil:: ~Galil() {
 	if (g) {
