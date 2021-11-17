@@ -48,16 +48,27 @@ uint16_t Galil::DigitalInput() {
 	uint16_t inputData = 0x0;
 
 	for (int i = 15; i >= 0; i--) {
-		std::cout << i << std::endl;
 		inputData = inputData | DigitalBitInput(i)<<i;
 	}
 	/*std::bitset<16> x(inputData);
 	std::cout << x << std::endl;*/
 	return inputData;
 }
-uint8_t Galil::DigitalByteInput(bool bank) {	// Read either high or low byte, as specified by user in 'bank'
-										/// 0 = low, 1 = high
-	return 0;
+uint8_t Galil::DigitalByteInput(bool bank) {	
+	// Read either high or low byte, as specified by user in 'bank'
+	// 0 = low, 1 = high
+	uint16_t Data = 0x0;
+	uint8_t inputByte = 0x0;
+	Data = DigitalInput();
+	if (bank == TRUE) {
+		inputByte = (uint8_t)((Data & 0xFF00) >> 8);
+	}
+	else {
+		inputByte = (uint8_t)(Data & 0x00FF);
+	}
+	std::bitset<8> x(inputByte);
+	std::cout << x << std::endl;
+	return inputByte;
 }
 bool Galil::DigitalBitInput(uint8_t bit) {		// Read single bit from current digital inputs. Above functions
 												// may use this function
