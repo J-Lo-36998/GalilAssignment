@@ -14,6 +14,7 @@ Galil::Galil() {
 Galil::Galil(EmbeddedFunctions * Funcs, GCStringIn address) {
 	// Constructor with EmbeddedFunciton initialization
 	g = GCon{ 0 };
+	memset(ReadBuffer, 0, sizeof(ReadBuffer));
 	Funcs->GOpen(address, &g);
 	Functions = Funcs;
 	std::cout << "Connected" << std::endl;
@@ -21,6 +22,7 @@ Galil::Galil(EmbeddedFunctions * Funcs, GCStringIn address) {
 
 void Galil::DigitalOutput(uint16_t value) {
 	// Write to all 16 bits of digital output, 1 command to the Galil
+	memset(ReadBuffer, 0, sizeof(ReadBuffer));
 	uint8_t highByte = (value >> 8) & 0xFF;
 	uint8_t lowByte = (value & 0xFF);
 	std::string CommandStr = "OP" + std::to_string(lowByte) + "," + std::to_string(highByte);
@@ -30,6 +32,7 @@ void Galil::DigitalOutput(uint16_t value) {
 void Galil::DigitalByteOutput(bool bank, uint8_t value) {
 	// Write to one byte, either high or low byte, as specified by user in 'bank'
 	// 0 = low, 1 = high
+	memset(ReadBuffer, 0, sizeof(ReadBuffer));
 	if (bank == TRUE) {
 		std::string CommandStr = "OP," +  std::to_string(value);
 		Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
@@ -43,6 +46,7 @@ void Galil::DigitalByteOutput(bool bank, uint8_t value) {
 }
 void Galil::DigitalBitOutput(bool val, uint8_t bit) {
 	// Write single bit to digital outputs. 'bit' specifies which bit
+	memset(ReadBuffer, 0, sizeof(ReadBuffer));
 	std::string CommandStr = "OB" + std::to_string(bit) + ","+std::to_string(val);
 	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
 	CheckSuccessfulWrite();
@@ -92,7 +96,6 @@ bool Galil::CheckSuccessfulWrite() {	// Check the string response from the Galil
 	else if (ReadBuffer[0] == '?') {
 		return 0;
 	}
-
 	return 0;
 }
 
@@ -108,8 +111,7 @@ float Galil::AnalogInput(uint8_t channel) {						// Read Analog channel and retu
 	return voltage;
 }
 void Galil::AnalogOutput(uint8_t channel, double voltage) {		// Write to any channel of the Galil, send voltages as
-	//char command[128] = "";
-	//sprintf_s(command, "AO%d,%lf", channel, voltage);
+	memset(ReadBuffer, 0, sizeof(ReadBuffer));
 	std::string CommandStr = "AO" + std::to_string(channel) + "," + std::to_string(voltage);
 	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
 	CheckSuccessfulWrite();
