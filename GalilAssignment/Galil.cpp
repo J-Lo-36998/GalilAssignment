@@ -1,4 +1,5 @@
 #include "Galil.h"
+#include "EmbeddedFunctions.h"
 #include <iostream>
 #include <conio.h>
 #include <sstream>
@@ -95,7 +96,8 @@ bool Galil::DigitalBitInput(uint8_t bit) {		// Read single bit from current digi
 
 bool Galil::CheckSuccessfulWrite() {	// Check the string response from the Galil to check that the last 
 								// command executed correctly. 1 = succesful. NOT AUTOMARKED
-	return TRUE;
+	//Functions->GInfo(g, ReadBuffer, sizeof(ReadBuffer));
+	return Functions->GInfo(g, ReadBuffer, sizeof(ReadBuffer));
 }
 
 // ANALOG FUNCITONS
@@ -104,6 +106,8 @@ float Galil::AnalogInput(uint8_t channel) {						// Read Analog channel and retu
 	float voltage = 0;
 	char voltageData[] = "";
 	Functions-> GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
+	//std::cout << "hi";
+	//std::cout << ReadBuffer;
 	voltage = atof(ReadBuffer);
 	return voltage;
 }
@@ -132,20 +136,27 @@ int Galil::ReadEncoder() {									// Read from Encoder
 	return encoderVal;
 }
 void Galil::setSetPoint(int s) {							// Set the desired setpoint for control loops, counts or counts/sec
-
+	std::string CommandStr = "CL"+std::to_string(s);
+	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
 }
 void Galil::setKp(double gain) {							// Set the proportional gain of the controller used in controlLoop()
-
+	std::string CommandStr = "KP" + std::to_string(gain);
+	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
 }
 void Galil::setKi(double gain) {							// Set the integral gain of the controller used in controlLoop()
-
+	std::string CommandStr = "KI" + std::to_string(gain);
+	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
 }
 void Galil::setKd(double gain) {						// Set the derivative gain of the controller used in controlLoop()
-
+	std::string CommandStr = "KD" + std::to_string(gain);
+	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
 }
-std::ostream& operator<<(std::ostream& output, Galil& galil) {
-
-}
+//std::ostream& operator<<(std::ostream& output, Galil& galil) {
+//	Galil myGalil;
+//	EmbeddedFunctions* Functions;
+//
+//	Functions->GInfo(myGalil.g, );
+//}
 Galil:: ~Galil() {
 	if (g) {
 		Functions->GClose(g);
