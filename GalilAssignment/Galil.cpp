@@ -17,6 +17,8 @@ Galil::Galil(EmbeddedFunctions * Funcs, GCStringIn address) {
 	memset(ReadBuffer, 0, sizeof(ReadBuffer));
 	Funcs->GOpen(address, &g);
 	Functions = Funcs;
+	std::string set_iq = "IQ65535";
+	Functions->GCommand(g, set_iq.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
 	std::cout << "Connected" << std::endl;
 }
 
@@ -145,8 +147,13 @@ void Galil::setKd(double gain) {						// Set the derivative gain of the controll
 	ControlParameters[2] = gain;
 }
 std::ostream& operator<<(std::ostream& output, Galil& galil) {
+	// Operator overload for '<<' operator. So the user can say cout << Galil; This function should print out the
+	// output of GInfo and GVersion, with two newLines after each.
 	galil.Functions->GInfo(galil.g, galil.ReadBuffer, sizeof(galil.ReadBuffer));
-	std::cout << galil.ReadBuffer;
+	//std::cout << galil.ReadBuffer<<std::endl;
+	output <<"Galil Info: "<<galil.ReadBuffer<<"\n";
+	galil.Functions->GVersion(galil.ReadBuffer, sizeof(galil.ReadBuffer));
+	output << "\nGalil Version: "<<galil.ReadBuffer<<"\n";
 	//output << "Hello World";
 	return output;
 }
