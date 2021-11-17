@@ -25,7 +25,16 @@ void Galil::DigitalOutput(uint16_t value) {
 }
 void Galil::DigitalByteOutput(bool bank, uint8_t value) {
 	// Write to one byte, either high or low byte, as specified by user in 'bank'
-}													// 0 = low, 1 = high
+	// 0 = low, 1 = high
+	if (bank == TRUE) {
+		std::string CommandStr = "OP," +  std::to_string(value);
+		Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
+	}
+	else {
+		std::string CommandStr = "OP" + std::to_string(value);
+		Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
+	}
+}
 void Galil::DigitalBitOutput(bool val, uint8_t bit) {
 
 }
