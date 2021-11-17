@@ -15,13 +15,16 @@ Galil::Galil(EmbeddedFunctions * Funcs, GCStringIn address) {
 	g = GCon{ 0 };
 	Funcs->GOpen(address, &g);
 	Functions = Funcs;
-	std::cout << ReadBuffer;
+	//std::cout << ReadBuffer;
 	std::cout << "Connected" << std::endl;
 }
 
 void Galil::DigitalOutput(uint16_t value) {
 	// Write to all 16 bits of digital output, 1 command to the Galil
-	std::string CommandStr = "OP" + std::to_string(value) + "," + std::to_string(value);
+	//uint8_t val1 = 0
+	uint8_t highByte = (value >> 8) & 0xff;
+	uint8_t lowByte = (value & 0xff);
+	std::string CommandStr = "OP" + std::to_string(lowByte) + "," + std::to_string(highByte);
 	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
 }
 void Galil::DigitalByteOutput(bool bank, uint8_t value) {
@@ -52,23 +55,34 @@ uint16_t Galil::DigitalInput() {
 	}
 	/*std::bitset<16> x(inputData);
 	std::cout << x << std::endl;*/
+	//std::cout << inputData<<std::endl;
 	return inputData;
 }
 uint8_t Galil::DigitalByteInput(bool bank) {	
 	// Read either high or low byte, as specified by user in 'bank'
 	// 0 = low, 1 = high
 	uint16_t Data = 0x0;
-	uint8_t inputByte = 0x0;
+	uint16_t inputByte = 0x0;
+	
 	Data = DigitalInput();
-	if (bank == TRUE) {
-		inputByte = (uint8_t)((Data & 0xFF00) >> 8);
+	if (bank == TRUE) {//High Byte
+		uint8_t highByte = (Data >> 8)&0xff;
+		return highByte;
 	}
-	else {
-		inputByte = (uint8_t)(Data & 0x00FF);
+	else {//Low Byte
+		uint8_t lowByte = (Data & 0xFF);
+		//std::cout << lowByte;
+		return lowByte;
 	}
-	std::bitset<8> x(inputByte);
-	std::cout << x << std::endl;
-	return inputByte;
+
+	//std::cout << typeid(inputByte).name()<<std::endl;
+	//std::bitset<8> x(inputByte);
+	//std::cout << x << std::endl;
+	////std::cout << (int)inputByte;
+	//
+	//std::cout << int(inputByte) << std::endl;
+	//std
+	//return (inputByte);
 }
 bool Galil::DigitalBitInput(uint8_t bit) {		// Read single bit from current digital inputs. Above functions
 												// may use this function
@@ -107,11 +121,15 @@ void Galil::AnalogInputRange(uint8_t channel, uint8_t range) {	// Configure the 
 // ENCODER / CONTROL FUNCTIONS
 void Galil::WriteEncoder() {								// Manually Set the encoder value to zero
 	//NOT COMPLETE
-	std::string CommandStr = "WE,0,0";
+	std::string CommandStr = "WE0,0";
 	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
 }
 int Galil::ReadEncoder() {									// Read from Encoder
-	return 0;
+	int encoderVal{ 0 };
+	std::string CommandStr = "QE0";
+	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
+	encoderVal = atoi(ReadBuffer);
+	return encoderVal;
 }
 void Galil::setSetPoint(int s) {							// Set the desired setpoint for control loops, counts or counts/sec
 
@@ -123,6 +141,9 @@ void Galil::setKi(double gain) {							// Set the integral gain of the controlle
 
 }
 void Galil::setKd(double gain) {						// Set the derivative gain of the controller used in controlLoop()
+
+}
+std::ostream& operator<<(std::ostream& output, Galil& galil) {
 
 }
 Galil:: ~Galil() {
