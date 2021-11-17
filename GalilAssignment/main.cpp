@@ -31,10 +31,11 @@ int main() {
 	std::cout << galil.AnalogInput(6) << std::endl;
 	std::cout << galil.AnalogInput(7) << std::endl;
 	galil.DigitalOutput(255);
-	galil.DigitalByteOutput(1, 0);
-	galil.DigitalByteOutput(0, 1);
-	//galil.DigitalBitOutput(1, 8);
-	galil.DigitalInput();
+	//galil.DigitalByteOutput(1, 0);
+	//galil.DigitalByteOutput(0, 25);
+	galil.DigitalBitOutput(0, 0);
+	galil.DigitalBitOutput(0, 2);
+	std::cout<<galil.DigitalBitInput(0);
 	Console::WriteLine("Terminating!");
 	Console::ReadKey();
 	

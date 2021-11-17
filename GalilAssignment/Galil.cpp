@@ -5,7 +5,7 @@
 #include <string>
 #include <stdio.h>
 #include <ctype.h>
-
+#include <bitset>
 //Constructors
 Galil::Galil() {
 	// Default constructor. Initialize variables, open Galil connection and allocate memory. NOT AUTOMARKED
@@ -45,16 +45,18 @@ void Galil::DigitalBitOutput(bool val, uint8_t bit) {
 uint16_t Galil::DigitalInput() {
 	// Return the 16 bits of input data
 	// Query the digital inputs of the GALIL, See Galil command library @IN
-	uint16_t inputData = { 0 };
-	for (int i = 0; i < 16; i++) {
+	uint16_t inputData = 0x0;
+	//int a[15] = { 0 };
+	/*for (int i = 16; i < 3; i++) {
 		std::string CommandStr = "MG@IN[" + std::to_string(i) + "]" ;
 		Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
-		inputData = inputData | atoi(ReadBuffer);
-		
-		std::cout << inputData;
-	}
-	std::cout << std::endl;
-	std::cout << inputData << std::endl;
+		inputData = atoi(ReadBuffer)| inputData  ;
+		inputData = inputData << 1;
+		std::bitset<16> x( inputData);
+		std::cout << atoi(ReadBuffer) << std::endl;
+		std::cout << x << std::endl;;
+	}*/
+	
 	//std::cout << inputData;
 	return 0;
 }
@@ -63,8 +65,12 @@ uint8_t Galil::DigitalByteInput(bool bank) {	// Read either high or low byte, as
 	return 0;
 }
 bool Galil::DigitalBitInput(uint8_t bit) {		// Read single bit from current digital inputs. Above functions
-										// may use this function
-	return FALSE;
+												// may use this function
+	bool input{ FALSE };
+	std::string CommandStr = "MG@IN[" + std::to_string(bit) + "]";
+	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
+	input = atoi(ReadBuffer);
+	return input;
 }
 
 bool Galil::CheckSuccessfulWrite() {	// Check the string response from the Galil to check that the last 
