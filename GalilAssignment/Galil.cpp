@@ -5,6 +5,7 @@
 #include <string>
 #include <stdio.h>
 #include <ctype.h>
+
 //Constructors
 Galil::Galil() {
 	// Default constructor. Initialize variables, open Galil connection and allocate memory. NOT AUTOMARKED
@@ -43,7 +44,18 @@ void Galil::DigitalBitOutput(bool val, uint8_t bit) {
 // DIGITAL INPUTS
 uint16_t Galil::DigitalInput() {
 	// Return the 16 bits of input data
-// Query the digital inputs of the GALIL, See Galil command library @IN
+	// Query the digital inputs of the GALIL, See Galil command library @IN
+	uint16_t inputData = { 0 };
+	for (int i = 0; i < 16; i++) {
+		std::string CommandStr = "MG@IN[" + std::to_string(i) + "]" ;
+		Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
+		inputData = inputData | atoi(ReadBuffer);
+		
+		std::cout << inputData;
+	}
+	std::cout << std::endl;
+	std::cout << inputData << std::endl;
+	//std::cout << inputData;
 	return 0;
 }
 uint8_t Galil::DigitalByteInput(bool bank) {	// Read either high or low byte, as specified by user in 'bank'
