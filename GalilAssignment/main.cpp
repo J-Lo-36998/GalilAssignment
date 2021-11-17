@@ -128,7 +128,7 @@ int testingGalil() {
 int main() {
 	EmbeddedFunctions Funcs;
 	GCStringIn addr = "192.168.0.120 -d";
-	Galil* galil = new Galil(&Funcs, addr);
+	Galil galil (&Funcs, addr);
 	//
 	///*
 	//std::cout << galil->AnalogInput(0) << std::endl;
@@ -140,14 +140,14 @@ int main() {
 	//std::cout << galil.AnalogInput(5) << std::endl;
 	//std::cout << galil.AnalogInput(6) << std::endl;
 	//std::cout << galil.AnalogInput(7) << std::endl;*/
-	////galil.DigitalOutput(255);
-	std::cout <<unsigned int(galil->DigitalByteInput(0))<<std::endl;
+	//std::cout<<galil->AnalogOutput(0, 1) << std::endl;
+	//std::cout <<unsigned int(galil->DigitalByteInput(0))<<std::endl;
 	//galil.DigitalOutput(0);
 
 	//for (uint8_t i = 0; i < 8; i++) {
 	//	galil.AnalogOutput(i, 0);
 	//}
-
+	galil.AnalogOutput(0, 1);
 	//galil.WriteEncoder();
 	//galil.DigitalBitOutput(1, 4);
 	//std::cout << (galil.DigitalInput() == 0x10);
@@ -158,7 +158,7 @@ int main() {
 	//testingGalil();
 	Console::WriteLine("Terminating!");
 	Console::ReadKey();
-	delete galil;
+	//delete galil;
 	return G_NO_ERROR;
 
 }
