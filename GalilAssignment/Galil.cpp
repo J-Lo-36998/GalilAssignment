@@ -66,10 +66,8 @@ uint8_t Galil::DigitalByteInput(bool bank) {
 	// 0 = low, 1 = high
 	uint16_t Data = 0x0;
 	Data = DigitalInput();
-	std::cout << Data << std::endl;
 	if (bank == TRUE) {//High Byte
 		uint8_t highByte = (Data >> 8) & 0xFF;
-		std::cout << unsigned(highByte)<<std::endl;
 		return highByte;
 	}
 	else {//Low Byte
@@ -146,10 +144,12 @@ void Galil::setKi(double gain) {							// Set the integral gain of the controlle
 void Galil::setKd(double gain) {						// Set the derivative gain of the controller used in controlLoop()
 	ControlParameters[2] = gain;
 }
-//std::ostream& operator<<(std::ostream& output, Galil& galil) {
-//	std::cout << "Hello World";
-//	return 0;
-//}
+std::ostream& operator<<(std::ostream& output, Galil& galil) {
+	galil.Functions->GInfo(galil.g, galil.ReadBuffer, sizeof(galil.ReadBuffer));
+	std::cout << galil.ReadBuffer;
+	//output << "Hello World";
+	return output;
+}
 Galil:: ~Galil() {
 	if (g) {
 		Functions->GClose(g);
