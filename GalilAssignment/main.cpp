@@ -140,13 +140,24 @@ int main() {
 	std::cout << MyGalil.AnalogInput(5) << std::endl;
 	std::cout << MyGalil.AnalogInput(6) << std::endl;
 	std::cout << MyGalil.AnalogInput(7) << std::endl;
-	MyGalil.AnalogOutput(0, 0);
+	/*MyGalil.AnalogOutput(0, 0);
 	std::cout <<unsigned int(MyGalil.DigitalByteInput(0))<<std::endl;
 	MyGalil.DigitalOutput(0xFF);
 	
-	MyGalil.AnalogOutput(7, 0);
 	MyGalil.WriteEncoder();
-	MyGalil.DigitalBitOutput(0, 1);
+	MyGalil.DigitalBitOutput(0, 1);*/
+	MyGalil.AnalogOutput(0, 0);
+	MyGalil.WriteEncoder();
+	//MyGalil.AnalogOutput(0, 1);
+	/*MyGalil.setSetPoint(5);
+	MyGalil.setKp(2);
+	MyGalil.setKi(10);
+	MyGalil.setKd(1);*/
+	std::cout << MyGalil.ReadEncoder() << std::endl;
+	//MyGalil.PositionControl(0, MyGalil.ReadEncoder());
+	//MyGalil.SpeedControl(1, MyGalil.ReadEncoder());
+	
+	Console::ReadKey();
 
 	//galil.DigitalInput();
 	//galil.DigitalByteInput(1);

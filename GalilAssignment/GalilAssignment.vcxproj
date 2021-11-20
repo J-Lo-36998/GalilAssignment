@@ -127,17 +127,17 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\include\EmbeddedFunctions.h" />
-    <ClInclude Include="..\include\Galil.h" />
-    <ClInclude Include="..\include\gclib.h" />
-    <ClInclude Include="..\include\gclibo.h" />
-    <ClInclude Include="..\include\gclib_errors.h" />
-    <ClInclude Include="..\include\gclib_record.h" />
-  </ItemGroup>
-  <ItemGroup>
     <Library Include="..\lib\GalilControl_x64_Debug.lib" />
     <Library Include="..\lib\gclibo_64.lib" />
     <Library Include="..\lib\gclib_64.lib" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\header files\EmbeddedFunctions.h" />
+    <ClInclude Include="..\header files\Galil.h" />
+    <ClInclude Include="..\header files\gclib.h" />
+    <ClInclude Include="..\header files\gclibo.h" />
+    <ClInclude Include="..\header files\gclib_errors.h" />
+    <ClInclude Include="..\header files\gclib_record.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

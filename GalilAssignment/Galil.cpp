@@ -151,9 +151,9 @@ std::ostream& operator<<(std::ostream& output, Galil& galil) {
 	// output of GInfo and GVersion, with two newLines after each.
 	galil.Functions->GInfo(galil.g, galil.ReadBuffer, sizeof(galil.ReadBuffer));
 	//std::cout << galil.ReadBuffer<<std::endl;
-	output <<"Galil Info: "<<galil.ReadBuffer<<"\n";
+	output <<"Galil Info: "<<galil.ReadBuffer<<"\n\n";
 	galil.Functions->GVersion(galil.ReadBuffer, sizeof(galil.ReadBuffer));
-	output << "\nGalil Version: "<<galil.ReadBuffer<<"\n";
+	output << "Galil Version: "<<galil.ReadBuffer<<"\n\n";
 	//output << "Hello World";
 	return output;
 }
