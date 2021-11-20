@@ -92,8 +92,8 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include</AdditionalIncludeDirectories>
-      <AdditionalUsingDirectories>$(SolutionDir)\dll</AdditionalUsingDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\header files</AdditionalIncludeDirectories>
+      <AdditionalUsingDirectories>$(SolutionDir)\bin\x64</AdditionalUsingDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
