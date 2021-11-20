@@ -149,15 +149,15 @@ int main() {
 	MyGalil.AnalogOutput(0, 0);
 	MyGalil.WriteEncoder();
 	//MyGalil.AnalogOutput(0, 1);
-	/*MyGalil.setSetPoint(5);
-	MyGalil.setKp(2);
-	MyGalil.setKi(10);
-	MyGalil.setKd(1);*/
+	MyGalil.setSetPoint(5000);
+	MyGalil.setKp(1);
+	MyGalil.setKi(1);
+	MyGalil.setKd(1);
 	std::cout << MyGalil.ReadEncoder() << std::endl;
 	//MyGalil.PositionControl(0, MyGalil.ReadEncoder());
-	//MyGalil.SpeedControl(1, MyGalil.ReadEncoder());
+	MyGalil.SpeedControl(1, MyGalil.ReadEncoder());
 	
-	Console::ReadKey();
+	//Console::ReadKey();
 
 	//galil.DigitalInput();
 	//galil.DigitalByteInput(1);
