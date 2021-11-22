@@ -126,47 +126,47 @@ int testingGalil() {
 	return 1;
 }
 int main() {
-	EmbeddedFunctions Funcs;
-	GCStringIn addr = "192.168.0.120 -d";
-	Galil MyGalil(&Funcs, addr);
-	std::cout << MyGalil<<std::endl;
+	//EmbeddedFunctions Funcs;
+	//GCStringIn addr = "192.168.0.120 -d";
+	//Galil MyGalil(&Funcs, addr);
+	//std::cout << MyGalil<<std::endl;
+	////
+	////
+	//std::cout << MyGalil.AnalogInput(0) << std::endl;
+	//std::cout << MyGalil.AnalogInput(1) << std::endl;
+	//std::cout << MyGalil.AnalogInput(2) << std::endl;
+	//std::cout << MyGalil.AnalogInput(3) << std::endl;
+	//std::cout << MyGalil.AnalogInput(4) << std::endl;
+	//std::cout << MyGalil.AnalogInput(5) << std::endl;
+	//std::cout << MyGalil.AnalogInput(6) << std::endl;
+	//std::cout << MyGalil.AnalogInput(7) << std::endl;
+	///*MyGalil.AnalogOutput(0, 0);
+	//std::cout <<unsigned int(MyGalil.DigitalByteInput(0))<<std::endl;
+	//MyGalil.DigitalOutput(0xFF);
 	//
+	//MyGalil.WriteEncoder();
+	//MyGalil.DigitalBitOutput(0, 1);*/
+	//MyGalil.AnalogOutput(0, 0);
+	//MyGalil.WriteEncoder();
+	////MyGalil.AnalogOutput(0, 1);
+	//MyGalil.setSetPoint(5000);
+	//MyGalil.setKp(0.001);
+	//MyGalil.setKi(1);
+	//MyGalil.setKd(1);
+	//std::cout << MyGalil.ReadEncoder() << std::endl;
+	//MyGalil.PositionControl(1, MyGalil.ReadEncoder());
+	////MyGalil.SpeedControl(1, MyGalil.ReadEncoder());
 	//
-	std::cout << MyGalil.AnalogInput(0) << std::endl;
-	std::cout << MyGalil.AnalogInput(1) << std::endl;
-	std::cout << MyGalil.AnalogInput(2) << std::endl;
-	std::cout << MyGalil.AnalogInput(3) << std::endl;
-	std::cout << MyGalil.AnalogInput(4) << std::endl;
-	std::cout << MyGalil.AnalogInput(5) << std::endl;
-	std::cout << MyGalil.AnalogInput(6) << std::endl;
-	std::cout << MyGalil.AnalogInput(7) << std::endl;
-	/*MyGalil.AnalogOutput(0, 0);
-	std::cout <<unsigned int(MyGalil.DigitalByteInput(0))<<std::endl;
-	MyGalil.DigitalOutput(0xFF);
-	
-	MyGalil.WriteEncoder();
-	MyGalil.DigitalBitOutput(0, 1);*/
-	MyGalil.AnalogOutput(0, 0);
-	MyGalil.WriteEncoder();
-	//MyGalil.AnalogOutput(0, 1);
-	MyGalil.setSetPoint(5000);
-	MyGalil.setKp(0.001);
-	MyGalil.setKi(1);
-	MyGalil.setKd(1);
-	std::cout << MyGalil.ReadEncoder() << std::endl;
-	MyGalil.PositionControl(1, MyGalil.ReadEncoder());
-	//MyGalil.SpeedControl(1, MyGalil.ReadEncoder());
-	
-	//Console::ReadKey();
+	////Console::ReadKey();
 
-	//galil.DigitalInput();
-	//galil.DigitalByteInput(1);
-	//
-	//testingGalil();
-	//galil->
-	//galil->;
+	////galil.DigitalInput();
+	////galil.DigitalByteInput(1);
+	////
+	////testingGalil();
+	////galil->
+	////galil->;
+	testingGalil();
 	
-	Console::WriteLine("Terminating!");
 	Console::ReadKey();
 	
 	//delete MyGalil;
