@@ -29,7 +29,12 @@ void Galil::DigitalOutput(uint16_t value) {
 	uint8_t lowByte = (value & 0xFF);
 	std::string CommandStr = "OP" + std::to_string(lowByte) + "," + std::to_string(highByte) + ";";
 	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
-	CheckSuccessfulWrite();
+	if (CheckSuccessfulWrite() == TRUE) {
+		std::cout << "Write Successful"<<std::endl;
+	}
+	else {
+		std::cout << "Write Unsuccessful" << std::endl;
+	}
 }
 void Galil::DigitalByteOutput(bool bank, uint8_t value) {
 	// Write to one byte, either high or low byte, as specified by user in 'bank'
@@ -38,12 +43,22 @@ void Galil::DigitalByteOutput(bool bank, uint8_t value) {
 	if (bank == TRUE) {
 		std::string CommandStr = "OP," +  std::to_string(value) + ";";
 		Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
-		CheckSuccessfulWrite();
+		if (CheckSuccessfulWrite() == TRUE) {
+			std::cout << "Write Successful" << std::endl;
+		}
+		else {
+			std::cout << "Write Unsuccessful" << std::endl;
+		}
 	}
 	else {
 		std::string CommandStr = "OP" + std::to_string(value) + ";";
 		Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
-		CheckSuccessfulWrite();
+		if (CheckSuccessfulWrite() == TRUE) {
+			std::cout << "Write Successful" << std::endl;
+		}
+		else {
+			std::cout << "Write Unsuccessful" << std::endl;
+		}
 	}
 }
 void Galil::DigitalBitOutput(bool val, uint8_t bit) {
@@ -51,7 +66,12 @@ void Galil::DigitalBitOutput(bool val, uint8_t bit) {
 	memset(ReadBuffer, 0, sizeof(ReadBuffer));
 	std::string CommandStr = "OB" + std::to_string(bit) + ","+std::to_string(val)+";";
 	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
-	CheckSuccessfulWrite();
+	if (CheckSuccessfulWrite() == TRUE) {
+		std::cout << "Write Successful" << std::endl;
+	}
+	else {
+		std::cout << "Write Unsuccessful" << std::endl;
+	}
 }
 // DIGITAL INPUTS
 uint16_t Galil::DigitalInput() {
@@ -113,7 +133,12 @@ void Galil::AnalogOutput(uint8_t channel, double voltage) {		// Write to any cha
 	memset(ReadBuffer, 0, sizeof(ReadBuffer));
 	std::string CommandStr = "AO" + std::to_string(channel) + "," + std::to_string(voltage) + ";";
 	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
-	CheckSuccessfulWrite();
+	if (CheckSuccessfulWrite() == TRUE) {
+		std::cout << "Write Successful" << std::endl;
+	}
+	else {
+		std::cout << "Write Unsuccessful" << std::endl;
+	}
 }
 void Galil::AnalogInputRange(uint8_t channel, uint8_t range) {	// Configure the range of the input channel with												// the desired range code
 	std::string CommandStr = "AQ" + std::to_string(channel) + "," + std::to_string(range) + ";";
