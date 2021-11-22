@@ -93,10 +93,9 @@ bool Galil::CheckSuccessfulWrite() {	// Check the string response from the Galil
 	if (ReadBuffer[0] == ':') {
 		return 1;
 	}
-	else if (ReadBuffer[0] == '?') {
+	else {
 		return 0;
 	}
-	return 0;
 }
 
 // ANALOG FUNCITONS
