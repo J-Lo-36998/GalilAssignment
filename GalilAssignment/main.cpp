@@ -126,10 +126,10 @@ int testingGalil() {
 	return 1;
 }
 int main() {
-	//EmbeddedFunctions Funcs;
-	//GCStringIn addr = "192.168.0.120 -d";
-	//Galil MyGalil(&Funcs, addr);
-	//std::cout << MyGalil<<std::endl;
+	/*EmbeddedFunctions Funcs;
+	GCStringIn addr = "192.168.0.120 -d";
+	Galil MyGalil(&Funcs, addr);
+	std::cout << MyGalil;*/
 	//////
 	//////
 	//std::cout << MyGalil.AnalogInput(0) << std::endl;
@@ -150,7 +150,8 @@ int main() {
 	//MyGalil.DigitalBitOutput(0, 1);*/
 	//MyGalil.AnalogOutput(0, 0);
 	//MyGalil.WriteEncoder();
-	////MyGalil.AnalogOutput(0, 1);
+	//MyGalil.AnalogOutput(0, 0);
+	//std::cout << MyGalil.CheckSuccessfulWrite();
 	//MyGalil.setSetPoint(5000);
 	//MyGalil.setKp(0.001);
 	//MyGalil.setKi(1);
