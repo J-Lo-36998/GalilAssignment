@@ -32,6 +32,9 @@
     <Library Include="..\lib\gclibo_64.lib">
       <Filter>Resource Files</Filter>
     </Library>
+    <Library Include="..\lib\GalilControl_x64_Release.lib">
+      <Filter>Resource Files</Filter>
+    </Library>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\header files\EmbeddedFunctions.h">

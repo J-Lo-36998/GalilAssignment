@@ -128,6 +128,7 @@
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\lib\GalilControl_x64_Debug.lib" />
+    <Library Include="..\lib\GalilControl_x64_Release.lib" />
     <Library Include="..\lib\gclibo_64.lib" />
     <Library Include="..\lib\gclib_64.lib" />
   </ItemGroup>

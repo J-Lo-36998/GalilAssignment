@@ -19,7 +19,6 @@ Galil::Galil(EmbeddedFunctions * Funcs, GCStringIn address) {
 	Functions = Funcs;
 	std::string set_iq = "IQ65535;";
 	Functions->GCommand(g, set_iq.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
-	std::cout << "Connected" << std::endl;
 }
 
 void Galil::DigitalOutput(uint16_t value) {
@@ -29,12 +28,7 @@ void Galil::DigitalOutput(uint16_t value) {
 	uint8_t lowByte = (value & 0xFF);
 	std::string CommandStr = "OP" + std::to_string(lowByte) + "," + std::to_string(highByte) + ";";
 	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
-	if (CheckSuccessfulWrite() == TRUE) {
-		std::cout << "Write Successful"<<std::endl;
-	}
-	else {
-		std::cout << "Write Unsuccessful" << std::endl;
-	}
+	CheckSuccessfulWrite();
 }
 void Galil::DigitalByteOutput(bool bank, uint8_t value) {
 	// Write to one byte, either high or low byte, as specified by user in 'bank'
@@ -43,22 +37,12 @@ void Galil::DigitalByteOutput(bool bank, uint8_t value) {
 	if (bank == TRUE) {
 		std::string CommandStr = "OP," +  std::to_string(value) + ";";
 		Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
-		if (CheckSuccessfulWrite() == TRUE) {
-			std::cout << "Write Successful" << std::endl;
-		}
-		else {
-			std::cout << "Write Unsuccessful" << std::endl;
-		}
+		CheckSuccessfulWrite();
 	}
 	else {
 		std::string CommandStr = "OP" + std::to_string(value) + ";";
 		Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
-		if (CheckSuccessfulWrite() == TRUE) {
-			std::cout << "Write Successful" << std::endl;
-		}
-		else {
-			std::cout << "Write Unsuccessful" << std::endl;
-		}
+		CheckSuccessfulWrite();
 	}
 }
 void Galil::DigitalBitOutput(bool val, uint8_t bit) {
@@ -66,12 +50,7 @@ void Galil::DigitalBitOutput(bool val, uint8_t bit) {
 	memset(ReadBuffer, 0, sizeof(ReadBuffer));
 	std::string CommandStr = "OB" + std::to_string(bit) + ","+std::to_string(val)+";";
 	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
-	if (CheckSuccessfulWrite() == TRUE) {
-		std::cout << "Write Successful" << std::endl;
-	}
-	else {
-		std::cout << "Write Unsuccessful" << std::endl;
-	}
+	CheckSuccessfulWrite();
 }
 // DIGITAL INPUTS
 uint16_t Galil::DigitalInput() {
@@ -111,9 +90,11 @@ bool Galil::CheckSuccessfulWrite() {	// Check the string response from the Galil
 								// command executed correctly. 1 = succesful. NOT AUTOMARKED
 	
 	if (ReadBuffer[0] == ':') {
+		//std::cout << "Write Successful" << std::endl;
 		return 1;
 	}
 	else {
+		//std::cout << "Write Unuccessful" << std::endl;
 		return 0;
 	}
 }
@@ -124,8 +105,6 @@ float Galil::AnalogInput(uint8_t channel) {						// Read Analog channel and retu
 	float voltage = 0;
 	char voltageData[] = "";
 	Functions-> GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
-	//std::cout << "hi";
-	//std::cout << ReadBuffer;
 	voltage = atof(ReadBuffer);
 	return voltage;
 }
@@ -133,12 +112,7 @@ void Galil::AnalogOutput(uint8_t channel, double voltage) {		// Write to any cha
 	memset(ReadBuffer, 0, sizeof(ReadBuffer));
 	std::string CommandStr = "AO" + std::to_string(channel) + "," + std::to_string(voltage) + ";";
 	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
-	if (CheckSuccessfulWrite() == TRUE) {
-		std::cout << "Write Successful" << std::endl;
-	}
-	else {
-		std::cout << "Write Unsuccessful" << std::endl;
-	}
+	CheckSuccessfulWrite();
 }
 void Galil::AnalogInputRange(uint8_t channel, uint8_t range) {	// Configure the range of the input channel with												// the desired range code
 	std::string CommandStr = "AQ" + std::to_string(channel) + "," + std::to_string(range) + ";";
@@ -174,11 +148,9 @@ std::ostream& operator<<(std::ostream& output, Galil& galil) {
 	// Operator overload for '<<' operator. So the user can say cout << Galil; This function should print out the
 	// output of GInfo and GVersion, with two newLines after each.
 	galil.Functions->GInfo(galil.g, galil.ReadBuffer, sizeof(galil.ReadBuffer));
-	//std::cout << galil.ReadBuffer<<std::endl;
-	output <<"Galil Info: "<<galil.ReadBuffer<<"\n\n";
+	output << galil.ReadBuffer<<"\n\n";
 	galil.Functions->GVersion(galil.ReadBuffer, sizeof(galil.ReadBuffer));
-	output << "Galil Version: "<<galil.ReadBuffer<<"\n\n";
-	//output << "Hello World";
+	output << galil.ReadBuffer<<"\n\n";
 	return output;
 }
 Galil:: ~Galil() {
