@@ -19,6 +19,7 @@ Galil::Galil(EmbeddedFunctions * Funcs, GCStringIn address) {
 	Functions = Funcs;
 	std::string set_iq = "IQ65535;";
 	Functions->GCommand(g, set_iq.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
+	CheckSuccessfulWrite();
 }
 
 void Galil::DigitalOutput(uint16_t value) {
@@ -120,6 +121,7 @@ void Galil::AnalogInputRange(uint8_t channel, uint8_t range) {	// Configure the 
 	memset(ReadBuffer, 0, sizeof(ReadBuffer));
 	std::string CommandStr = "AQ" + std::to_string(channel) + "," + std::to_string(range) + ";";
 	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
+	CheckSuccessfulWrite();
 }
 
 // ENCODER / CONTROL FUNCTIONS
@@ -154,12 +156,12 @@ std::ostream& operator<<(std::ostream& output, Galil& galil) {
 	// output of GInfo and GVersion, with two newLines after each.
 	galil.Functions->GInfo(galil.g, galil.ReadBuffer, sizeof(galil.ReadBuffer));
 	output << galil.ReadBuffer << std::endl;
-	std::cout<< std::endl;
-	std::cout << std::endl;
+	output << std::endl;
+	output << std::endl;
 	galil.Functions->GVersion(galil.ReadBuffer, sizeof(galil.ReadBuffer));
 	output << galil.ReadBuffer << std::endl;
-	std::cout << std::endl;
-	std::cout << std::endl;
+	output << std::endl;
+	output << std::endl;
 	return output;
 }
 Galil:: ~Galil() {
