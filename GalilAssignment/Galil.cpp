@@ -13,8 +13,8 @@ Galil::Galil() {
 }												
 Galil::Galil(EmbeddedFunctions * Funcs, GCStringIn address) {
 	// Constructor with EmbeddedFunciton initialization
-	g = GCon{ 0 };
 	memset(ReadBuffer, 0, sizeof(ReadBuffer));
+	g = GCon{ 0 };
 	Funcs->GOpen(address, &g);
 	Functions = Funcs;
 	std::string set_iq = "IQ65535;";
@@ -37,13 +37,12 @@ void Galil::DigitalByteOutput(bool bank, uint8_t value) {
 	if (bank == TRUE) {
 		std::string CommandStr = "OP," +  std::to_string(value) + ";";
 		Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
-		CheckSuccessfulWrite();
 	}
 	else {
 		std::string CommandStr = "OP" + std::to_string(value) + ";";
-		Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
-		CheckSuccessfulWrite();
+		Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);	
 	}
+	CheckSuccessfulWrite();
 }
 void Galil::DigitalBitOutput(bool val, uint8_t bit) {
 	// Write single bit to digital outputs. 'bit' specifies which bit
@@ -56,6 +55,7 @@ void Galil::DigitalBitOutput(bool val, uint8_t bit) {
 uint16_t Galil::DigitalInput() {
 	// Return the 16 bits of input data
 	// Query the digital inputs of the GALIL, See Galil command library @IN
+	memset(ReadBuffer, 0, sizeof(ReadBuffer));
 	uint16_t inputData = 0x0;
 	for (int i = 15; i >= 0; i--) {
 		inputData = inputData | DigitalBitInput(i)<<i;
@@ -65,6 +65,7 @@ uint16_t Galil::DigitalInput() {
 uint8_t Galil::DigitalByteInput(bool bank) {	
 	// Read either high or low byte, as specified by user in 'bank'
 	// 0 = low, 1 = high
+	memset(ReadBuffer, 0, sizeof(ReadBuffer));
 	uint16_t Data = 0x0;
 	Data = DigitalInput();
 	if (bank == TRUE) {//High Byte
@@ -79,6 +80,7 @@ uint8_t Galil::DigitalByteInput(bool bank) {
 }
 bool Galil::DigitalBitInput(uint8_t bit) {		// Read single bit from current digital inputs. Above functions
 												// may use this function
+	memset(ReadBuffer, 0, sizeof(ReadBuffer));
 	bool input{ FALSE };
 	std::string CommandStr = "MG@IN[" + std::to_string(bit) + "];";
 	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
@@ -88,7 +90,6 @@ bool Galil::DigitalBitInput(uint8_t bit) {		// Read single bit from current digi
 
 bool Galil::CheckSuccessfulWrite() {	// Check the string response from the Galil to check that the last 
 								// command executed correctly. 1 = succesful. NOT AUTOMARKED
-	
 	if (ReadBuffer[0] == ':') {
 		//std::cout << "Write Successful" << std::endl;
 		return 1;
@@ -101,9 +102,9 @@ bool Galil::CheckSuccessfulWrite() {	// Check the string response from the Galil
 
 // ANALOG FUNCITONS
 float Galil::AnalogInput(uint8_t channel) {						// Read Analog channel and return voltage	
+	memset(ReadBuffer, 0, sizeof(ReadBuffer));
 	std::string CommandStr = "MG@AN[" + std::to_string(channel) + "];";
 	float voltage = 0;
-	char voltageData[] = "";
 	Functions-> GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
 	voltage = atof(ReadBuffer);
 	return voltage;
@@ -114,18 +115,22 @@ void Galil::AnalogOutput(uint8_t channel, double voltage) {		// Write to any cha
 	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
 	CheckSuccessfulWrite();
 }
-void Galil::AnalogInputRange(uint8_t channel, uint8_t range) {	// Configure the range of the input channel with												// the desired range code
+void Galil::AnalogInputRange(uint8_t channel, uint8_t range) {	// Configure the range of the input channel with	
+																// the desired range code
+	memset(ReadBuffer, 0, sizeof(ReadBuffer));
 	std::string CommandStr = "AQ" + std::to_string(channel) + "," + std::to_string(range) + ";";
 	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
 }
 
 // ENCODER / CONTROL FUNCTIONS
 void Galil::WriteEncoder() {								// Manually Set the encoder value to zero
-	//NOT COMPLETE
+	memset(ReadBuffer, 0, sizeof(ReadBuffer));
 	std::string CommandStr = "WE0,0;";
 	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
+	CheckSuccessfulWrite();
 }
 int Galil::ReadEncoder() {									// Read from Encoder
+	memset(ReadBuffer, 0, sizeof(ReadBuffer));
 	int encoderVal{ 0 };
 	std::string CommandStr = "QE0;";
 	Functions->GCommand(g, CommandStr.c_str(), ReadBuffer, sizeof(ReadBuffer), 0);
@@ -148,9 +153,13 @@ std::ostream& operator<<(std::ostream& output, Galil& galil) {
 	// Operator overload for '<<' operator. So the user can say cout << Galil; This function should print out the
 	// output of GInfo and GVersion, with two newLines after each.
 	galil.Functions->GInfo(galil.g, galil.ReadBuffer, sizeof(galil.ReadBuffer));
-	output << galil.ReadBuffer<<"\n\n";
+	output << galil.ReadBuffer << std::endl;
+	std::cout<< std::endl;
+	std::cout << std::endl;
 	galil.Functions->GVersion(galil.ReadBuffer, sizeof(galil.ReadBuffer));
-	output << galil.ReadBuffer<<"\n\n";
+	output << galil.ReadBuffer << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
 	return output;
 }
 Galil:: ~Galil() {

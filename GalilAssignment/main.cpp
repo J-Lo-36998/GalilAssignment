@@ -130,8 +130,8 @@ int main() {
 	//GCStringIn addr = "192.168.0.120 -d";
 	//Galil MyGalil(&Funcs, addr);
 	//std::cout << MyGalil<<std::endl;
-	////
-	////
+	//////
+	//////
 	//std::cout << MyGalil.AnalogInput(0) << std::endl;
 	//std::cout << MyGalil.AnalogInput(1) << std::endl;
 	//std::cout << MyGalil.AnalogInput(2) << std::endl;
@@ -140,6 +140,8 @@ int main() {
 	//std::cout << MyGalil.AnalogInput(5) << std::endl;
 	//std::cout << MyGalil.AnalogInput(6) << std::endl;
 	//std::cout << MyGalil.AnalogInput(7) << std::endl;
+
+	//std::cout << MyGalil.AnalogInput(0) << std::endl;
 	///*MyGalil.AnalogOutput(0, 0);
 	//std::cout <<unsigned int(MyGalil.DigitalByteInput(0))<<std::endl;
 	//MyGalil.DigitalOutput(0xFF);
